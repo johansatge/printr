@@ -15,9 +15,9 @@ if (!class_exists('Printr'))
     class Printr
     {
 
-        public static function p($var, $echo = true, $show_context = true)
+        public static function p($var, $echo, $context)
         {
-            $html = '<pre style="' . self::styles() . '">' . ($show_context ? self::getContext() : '') . self::dumpVariable($var) . '</pre>';
+            $html = '<pre style="' . self::styles() . '">' . ($context ? self::getContext() : '') . self::dumpVariable($var) . '</pre>';
             if ($echo)
             {
                 echo $html;
@@ -32,14 +32,14 @@ if (!class_exists('Printr'))
             switch ($type)
             {
                 case 'boolean':
-                    $html .= self::wrap($var ? 'true' : 'false', 'red');
+                    $html .= self::wrap($var ? 'true' : 'false', '#a71d5d');
                     break;
                 case 'integer':
                 case 'double':
-                    $html .= self::wrap($var, 'blue');
+                    $html .= self::wrap($var, '#795da3');
                     break;
                 case 'string':
-                    $html .= self::wrap($var, 'green');
+                    $html .= self::wrap($var, '#0086b3');
                     break;
                 case 'array':
                 case 'object':
@@ -52,13 +52,13 @@ if (!class_exists('Printr'))
                     $html .= self::indent($depth) . ')';
                     break;
                 case 'resource':
-                    $html .= self::wrap('Resource', 'purple');
+                    $html .= self::wrap('Resource', '#183691');
                     break;
                 case 'null':
-                    $html .= self::wrap('NULL', 'black');
+                    $html .= self::wrap('NULL', '#183691');
                     break;
                 default:
-                    $html .= self::wrap($var, 'orange');
+                    $html .= self::wrap($var, '#000000');
                     break;
             };
             return $html;
@@ -79,7 +79,7 @@ if (!class_exists('Printr'))
             $trace = debug_backtrace();
             $info  = !empty($trace[2]['file']) ? str_replace($_SERVER['DOCUMENT_ROOT'], '', $trace[2]['file']) : '';
             $info .= !empty($trace[2]['line']) ? ':' . $trace[2]['line'] : '';
-            return !empty($info) ? $info . '<br>' : '';
+            return !empty($info) ? self::wrap($info, '#cccccc') . '<br>' : '';
         }
 
         private static function styles()
@@ -88,10 +88,10 @@ if (!class_exists('Printr'))
                 'z-index: 999',
                 'margin: 10px',
                 'display: block',
-                'background: #efefef',
+                'background: #F7F7F7',
                 'color: black',
                 'font-family: Courier',
-                'border: 1px solid #cccccc',
+                'border: 1px solid #DDDDDD',
                 'padding: 10px',
                 'font-size: 12px',
                 'line-height: 15px',
@@ -103,9 +103,9 @@ if (!class_exists('Printr'))
 
     if (!function_exists('printr'))
     {
-        function printr($var, $echo = true)
+        function printr($var, $echo = true, $context = true)
         {
-            return Printr::p($var, $echo);
+            return Printr::p($var, $echo, $context);
         }
     }
 }
