@@ -39,10 +39,12 @@ if (!class_exists('Printr'))
                     $html .= self::wrap($var, '#795da3');
                     break;
                 case 'string':
+                    $html .= self::wrap('(' . strlen($var) . ') ', '#999999');
                     $html .= self::wrap($var, '#0086b3');
                     break;
                 case 'array':
                 case 'object':
+                    $html .= $type === 'array' ? self::wrap('(' . count($var) . ') ', '#999999') : '';
                     $html .= '<br>' . self::indent($depth) . '(<br>';
                     foreach ($var as $key => $value)
                     {
@@ -89,7 +91,7 @@ if (!class_exists('Printr'))
                 'margin: 10px',
                 'display: block',
                 'background: #F7F7F7',
-                'color: black',
+                'color: #000000',
                 'font-family: Courier',
                 'border: 1px solid #DDDDDD',
                 'padding: 10px',
